@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,5 +16,8 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MessageEvent implements Serializable {
     private RequestType requestType;
+    private Boolean hasHeaders;
+    private List<String> features;
+    private String labelCol;
     private String value;
 }
