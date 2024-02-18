@@ -19,5 +19,6 @@ public class MessageEvent implements Serializable {
     private Boolean hasHeaders;
     private List<String> features;
     private String labelCol;
+    private String name;
     private String value;
 }
