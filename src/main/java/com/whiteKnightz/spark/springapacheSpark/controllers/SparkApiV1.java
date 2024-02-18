@@ -1,10 +1,13 @@
 package com.whiteKnightz.spark.springapacheSpark.controllers;
 
+import com.whiteKnightz.spark.springapacheSpark.kafka.producer.KafkaMessageProducer;
+import lombok.AllArgsConstructor;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class SparkApiV1 {
     @Autowired
     private SparkSession sparkSession;
+
+    @Autowired
+    private KafkaMessageProducer messageProducer;
 
     @RequestMapping("read-csv")
     public ResponseEntity<String> getRowCount() {
@@ -24,6 +30,12 @@ public class SparkApiV1 {
                 String.format("<h5>Schema <br/> %s</h5> <br/> Sample data - <br/>", dataset.schema().treeString()) +
                 dataset.showString(20, 20, true);
         return ResponseEntity.ok(html);
+    }
+
+    @RequestMapping("publishMessage")
+    public ResponseEntity<Boolean> publishMessage(@RequestBody(required = true) String message) {
+        messageProducer.sendMessage(message);
+        return ResponseEntity.ok(Boolean.TRUE);
     }
 
 }

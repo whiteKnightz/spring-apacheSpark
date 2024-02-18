@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yaml")
 public class Configurations {
 
     @Value("${app.name:spark-sprint-boot}")
