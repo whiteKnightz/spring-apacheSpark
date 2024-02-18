@@ -1,5 +1,6 @@
 package com.whiteKnightz.spark.springapacheSpark.controllers;
 
+import com.whiteKnightz.spark.springapacheSpark.dto.MessageEvent;
 import com.whiteKnightz.spark.springapacheSpark.kafka.KafkaMessageProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ public class SparkApiV1 {
     private KafkaMessageProducer messageProducer;
 
     @RequestMapping("publishMessage")
-    public ResponseEntity<Boolean> publishMessage(@RequestBody(required = true) String message) {
+    public ResponseEntity<Boolean> publishMessage(@RequestBody(required = true) MessageEvent message) {
         messageProducer.sendMessage(message);
         return ResponseEntity.ok(Boolean.TRUE);
     }
