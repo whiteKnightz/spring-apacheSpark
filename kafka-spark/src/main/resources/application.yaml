@@ -1,5 +1,7 @@
 app:
   name: spark-sprint-boot
+server:
+  port: 8081
 master:
   uri: local
 spring:
@@ -12,22 +14,12 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: com.whiteKnightz
-    producer:
-      bootstrap-servers: localhost:29092
-      auto-offset-reset: earliest
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      group-id: my-group
 
 
 springapacheSpark:
   kafka:
     topic: my-topic
-
-topic:
-  name:
-    producer: topic.example.kafka
-    consumer: topic.example.kafka
+    group-id: my-group
 
 auto:
   create:
