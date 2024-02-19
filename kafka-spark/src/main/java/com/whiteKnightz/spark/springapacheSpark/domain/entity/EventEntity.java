@@ -38,7 +38,7 @@ public class EventEntity {
                 .build();
     }
 
-    public Map<String, Object> getMap() {
+    public Map<String, Double> getMap() {
         try {
             return MapSerializerDeserializer.deserializeMap(this.modelValues);
         } catch (JsonProcessingException e) {
@@ -47,7 +47,7 @@ public class EventEntity {
         }
     }
 
-    public void setMap(Map<String, Object> map) {
+    public void setMap(Map<String, Double> map) {
         try {
             this.modelValues = MapSerializerDeserializer.serializeMap(map);
         } catch (JsonProcessingException e) {

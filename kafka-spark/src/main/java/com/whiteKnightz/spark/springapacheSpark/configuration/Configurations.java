@@ -1,5 +1,7 @@
 package com.whiteKnightz.spark.springapacheSpark.configuration;
 
+import com.whiteKnightz.spark.springapacheSpark.domain.adaptors.EventEntityRepositoryAdaptor;
+import com.whiteKnightz.spark.springapacheSpark.domain.repositories.DataLayerEventRepository;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
@@ -46,5 +48,9 @@ public class Configurations {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+    @Bean
+    public EventEntityRepositoryAdaptor messageEventService(DataLayerEventRepository repository){
+        return new EventEntityRepositoryAdaptor(repository);
+    }
 
 }
