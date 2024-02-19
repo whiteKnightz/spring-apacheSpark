@@ -110,7 +110,7 @@ public class SparkServiceImpl implements SparkService {
         // Make predictions and evaluate
         Dataset<Row> predictions = model.transform(testData);
         Evaluator evaluator = new RegressionEvaluator()
-                .setLabelCol("label")
+                .setLabelCol(messageEvent.getLabelCol())
                 .setPredictionCol("prediction")
                 .setMetricName("rmse");
         double rmse = evaluator.evaluate(predictions);
@@ -148,7 +148,7 @@ public class SparkServiceImpl implements SparkService {
         // Make predictions and evaluate
         Dataset<Row> predictions = model.transform(testData);
         Evaluator evaluator = new MulticlassClassificationEvaluator()
-                .setLabelCol("label")
+                .setLabelCol(messageEvent.getLabelCol())
                 .setPredictionCol("prediction");
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Multilayer Perceptron accuracy: " + accuracy);
