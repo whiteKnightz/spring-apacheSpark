@@ -15,7 +15,7 @@
 ```
 requestType:    <CLUSTERING, CLASSIFICATION, REGRESSION>
 hasHeaders:     <TRUE, FALSE>
-features:       List of features for input columns
+features:       List of features for input columns eg. ["col1", "col2", "col3"]
 labelCol:       Column for testing
 name:           A name for the payload
 value:          Base64 encoded file
