@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SparkServiceImpl implements SparkService {
@@ -51,7 +48,8 @@ public class SparkServiceImpl implements SparkService {
     @Override
     public void performClustering(MessageEvent messageEvent) {
         Dataset<Row> data = sparkSession.read().format("csv")
-                .option("header", true).option("inferSchema", true)
+                .option("header", true)
+                .option("inferSchema", messageEvent.getInferSchema())
                 .load(getPathForTempFile(messageEvent).getAbsolutePath());
 
         // Preprocess data (replace with your specific logic)
@@ -76,9 +74,9 @@ public class SparkServiceImpl implements SparkService {
 //        System.out.println("KMeans cluster labels: " + cluster);
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("Centre-1", model.clusterCenters()[0].toArray());
-        map.put("Centre-2", model.clusterCenters()[1].toArray());
-        map.put("Centre-3", model.clusterCenters()[2].toArray());
+        map.put("Centre-1", Arrays.toString(model.clusterCenters()[0].toArray()));
+        map.put("Centre-2", Arrays.toString(model.clusterCenters()[1].toArray()));
+        map.put("Centre-3", Arrays.toString(model.clusterCenters()[2].toArray()));
 
         persistEntity(messageEvent, map);
 
@@ -88,6 +86,7 @@ public class SparkServiceImpl implements SparkService {
     public void performRegression(MessageEvent messageEvent) {
         Dataset<Row> data = sparkSession.read().format("csv")
                 .option("header", messageEvent.getHasHeaders())
+                .option("inferSchema", messageEvent.getInferSchema())
                 .load(getPathForTempFile(messageEvent).getAbsolutePath());
 
         // Preprocess data (replace with your specific logic)
@@ -104,8 +103,9 @@ public class SparkServiceImpl implements SparkService {
 
         // Define regression tree and train model
         DecisionTreeRegressor dtr = new DecisionTreeRegressor()
-                .setMaxDepth(5) // Adjust max depth as needed
-                .setImpurity("mse");
+                .setLabelCol(messageEvent.getLabelCol())
+                .setMaxDepth(5); // Adjust max depth as needed
+//                .setImpurity("mse"); // Adjust impurity measure if needed
         DecisionTreeRegressionModel model = dtr.fit(trainingData);
 
         // Make predictions and evaluate
@@ -124,7 +124,8 @@ public class SparkServiceImpl implements SparkService {
     public void performClassification(MessageEvent messageEvent) {
         Dataset<Row> data = sparkSession.read()
                 .format("csv")
-                .option("header", true)
+                .option("header", messageEvent.getHasHeaders())
+                .option("inferSchema", messageEvent.getInferSchema())
                 .load(getPathForTempFile(messageEvent).getAbsolutePath());
 
         // Preprocess data (replace with your specific logic)

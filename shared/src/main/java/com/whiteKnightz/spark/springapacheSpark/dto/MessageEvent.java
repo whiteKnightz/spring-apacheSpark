@@ -17,6 +17,7 @@ import java.util.List;
 public class MessageEvent implements Serializable {
     private RequestType requestType;
     private Boolean hasHeaders;
+    private Boolean inferSchema;
     private List<String> features;
     private String labelCol;
     private String name;
