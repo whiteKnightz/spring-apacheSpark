@@ -6,6 +6,7 @@ import com.whiteKnightz.spark.springapacheSpark.dto.MessageEvent;
 import com.whiteKnightz.spark.springapacheSpark.dto.RequestType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class EventEntity {
 
     @Id
@@ -38,7 +40,7 @@ public class EventEntity {
                 .build();
     }
 
-    public Map<String, Double> getMap() {
+    public Map<String, Object> getMap() {
         try {
             return MapSerializerDeserializer.deserializeMap(this.modelValues);
         } catch (JsonProcessingException e) {
@@ -47,7 +49,7 @@ public class EventEntity {
         }
     }
 
-    public void setMap(Map<String, Double> map) {
+    public void setMap(Map<String, Object> map) {
         try {
             this.modelValues = MapSerializerDeserializer.serializeMap(map);
         } catch (JsonProcessingException e) {

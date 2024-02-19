@@ -19,7 +19,7 @@ public class EventEntityRepositoryAdaptor implements EventEntityRepository {
     }
 
     @Override
-    public EventEntity findById(String id) throws DomainViolationException {
+    public EventEntity findByReference(String id) throws DomainViolationException {
         return repository.findEventEntityByReference(id)
                 .orElseThrow(() -> new DomainViolationException("event.entity.id.not.valid"));
     }

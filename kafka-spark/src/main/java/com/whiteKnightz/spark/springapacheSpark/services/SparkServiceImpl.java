@@ -50,7 +50,8 @@ public class SparkServiceImpl implements SparkService {
 
     @Override
     public void performClustering(MessageEvent messageEvent) {
-        Dataset<Row> data = sparkSession.read().format("csv").option("header", true)
+        Dataset<Row> data = sparkSession.read().format("csv")
+                .option("header", true).option("inferSchema", true)
                 .load(getPathForTempFile(messageEvent).getAbsolutePath());
 
         // Preprocess data (replace with your specific logic)
@@ -71,13 +72,13 @@ public class SparkServiceImpl implements SparkService {
 
         // Predict clusters and assign labels
         Dataset<Row> clusteredData = model.transform(testData);
-        List<Row> cluster = clusteredData.select("cluster").distinct().collectAsList();
-        System.out.println("KMeans cluster labels: " + cluster);
+//        List<Row> cluster = clusteredData.select("cluster").distinct().collectAsList();
+//        System.out.println("KMeans cluster labels: " + cluster);
 
-        HashMap<String, Double> map = new HashMap<>();
-//        map.put("Centre-1", cluster.get(0));
-//        map.put("Centre-2", cluster.get(1));
-//        map.put("Centre-3", cluster.get(2));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("Centre-1", model.clusterCenters()[0].toArray());
+        map.put("Centre-2", model.clusterCenters()[1].toArray());
+        map.put("Centre-3", model.clusterCenters()[2].toArray());
 
         persistEntity(messageEvent, map);
 
@@ -174,7 +175,7 @@ public class SparkServiceImpl implements SparkService {
         return tempFile;
     }
 
-    private void persistEntity(MessageEvent messageEvent, Map<String, Double> map) {
+    private void persistEntity(MessageEvent messageEvent, Map<String, Object> map) {
         EventEntity eventEntity = EventEntity.createFromMessageEvent(messageEvent);
         eventEntity.setMap(map);
         eventService.persist(eventEntity);

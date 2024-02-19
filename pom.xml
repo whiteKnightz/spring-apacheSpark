@@ -17,6 +17,7 @@
         <java.version>1.8</java.version>
         <lombok-version>1.18.24</lombok-version>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -36,6 +37,12 @@
                 <groupId>org.codehaus.janino</groupId>
                 <artifactId>janino</artifactId>
                 <version>3.0.8</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -184,6 +191,11 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok-version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <source>${java.version}</source>

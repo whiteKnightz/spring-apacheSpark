@@ -9,7 +9,7 @@ import java.util.List;
 public interface EventEntityRepository {
     EventEntity persist(EventEntity entity);
 
-    EventEntity findById(String id) throws DomainViolationException;
+    EventEntity findByReference(String id) throws DomainViolationException;
 
     List<EventEntity> findByType(RequestType type);
 }
